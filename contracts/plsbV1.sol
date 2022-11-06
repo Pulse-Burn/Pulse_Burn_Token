@@ -1,8 +1,8 @@
-// File: contracts/PLSBV6.sol
+// Version: 7.1
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 
-import "gitlab.com/"
+import "https://gitlab.com/pulse-burn1/PLSB-Token/-/blob/dev/library/lib.sol"
 
 abstract contract Context {
     function _msgSender() internal view returns (address payable) {
@@ -53,9 +53,7 @@ interface IERC20 {
      *
      * Emits a {Transfer} event.
      */
-    function transfer(address recipient, uint256 amount)
-        external
-        returns (bool);
+    function transfer(address recipient, uint256 amount) external returns (bool);
 
     /**
      * @dev Returns the remaining number of tokens that `spender` will be
@@ -64,10 +62,7 @@ interface IERC20 {
      *
      * This value changes when {approve} or {transferFrom} are called.
      */
-    function allowance(address _owner, address spender)
-        external
-        view
-        returns (uint256);
+    function allowance(address _owner, address spender) external view returns (uint256);
 
     /**
      * @dev Sets `amount` as the allowance of `spender` over the caller's tokens.
@@ -94,11 +89,7 @@ interface IERC20 {
      *
      * Emits a {Transfer} event.
      */
-    function transferFrom(
-        address sender,
-        address recipient,
-        uint256 amount
-    ) external returns (bool);
+    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
 
     /**
      * @dev Emitted when `value` tokens are moved from one account (`from`) to
@@ -112,44 +103,24 @@ interface IERC20 {
      * @dev Emitted when the allowance of a `spender` for an `owner` is set by
      * a call to {approve}. `value` is the new allowance.
      */
-    event Approval(
-        address indexed owner,
-        address indexed spender,
-        uint256 value
-    );
+    event Approval(address indexed owner, address indexed spender, uint256 value);
 }
 
 interface IUniswapV2Factory {
-    event PairCreated(
-        address indexed token0,
-        address indexed token1,
-        address lpPair,
-        uint256
-    );
+    event PairCreated(address indexed token0, address indexed token1, address lpPair, uint256);
 
-    function getPair(address tokenA, address tokenB)
-        external
-        view
-        returns (address lpPair);
+    function getPair(address tokenA, address tokenB) external view returns (address lpPair);
 
-    function createPair(address tokenA, address tokenB)
-        external
-        returns (address lpPair);
+    function setPair(address tokenA, address tokenB) external returns (address lpPair);
 }
 
 interface IUniswapV2Pair {
     function factory() external view returns (address);
 
-    function getReserves()
-        external
-        view
-        returns (
-            uint112 reserve0,
-            uint112 reserve1,
-            uint32 blockTimestampLast
-        );
-    
+    function getReserves() external view returns (uint112 reserve0, uint112 reserve1, uint32 blockTimestampLast);
+
     function token0() external view returns (address);
+
     function token1() external view returns (address);
 }
 
@@ -158,81 +129,31 @@ interface IUniswapV2Router01 {
 
     function WPLS() external pure returns (address);
 
-    function addLiquidityETH(
-        address token,
-        uint256 amountTokenDesired,
-        uint256 amountTokenMin,
-        uint256 amountETHMin,
-        address to,
-        uint256 deadline
-    )
-        external
-        payable
-        returns (
-            uint256 amountToken,
-            uint256 amountETH,
-            uint256 liquidity
-        );
+    function addLiquidityETH(address token, uint256 amountTokenDesired, uint256 amountTokenMin,
+        uint256 amountETHMin, address to, uint256 deadline) external payable returns (uint256 amountToken,
+        uint256 amountETH, uint256 liquidity);
 
-    function addLiquidity(
-        address tokenA,
-        address tokenB,
-        uint256 amountADesired,
-        uint256 amountBDesired,
-        uint256 amountAMin,
-        uint256 amountBMin,
-        address to,
-        uint256 deadline
-    )
-        external
-        returns (
-            uint256 amountA,
-            uint256 amountB,
-            uint256 liquidity
-        );
+    function addLiquidity(address tokenA, address tokenB, uint256 amountADesired, uint256 amountBDesired,
+        uint256 amountAMin, uint256 amountBMin, address to, uint256 deadline) external returns (uint256 amountA,
+            uint256 amountB, uint256 liquidity);
 
-    function getAmountsOut(uint256 amountIn, address[] calldata path)
-        external
-        view
-        returns (uint256[] memory amounts);
+    function getAmountsOut(uint256 amountIn, address[] calldata path) external view returns (uint256[] memory amounts);
 
-    function getAmountsIn(uint256 amountOut, address[] calldata path)
-        external
-        view
-        returns (uint256[] memory amounts);
+    function getAmountsIn(uint256 amountOut, address[] calldata path) external view returns (uint256[] memory amounts);
 }
 
 interface IUniswapV2Router02 is IUniswapV2Router01 {
-    function swapExactTokensForETHSupportingFeeOnTransferTokens(
-        uint256 amountIn,
-        uint256 amountOutMin,
-        address[] calldata path,
-        address to,
-        uint256 deadline
-    ) external;
+    function swapExactTokensForETHSupportingFeeOnTransferTokens(uint256 amountIn, uint256 amountOutMin,
+    address[] calldata path, address to, uint256 deadline) external;
 
-    function swapExactETHForTokensSupportingFeeOnTransferTokens(
-        uint256 amountOutMin,
-        address[] calldata path,
-        address to,
-        uint256 deadline
-    ) external payable;
+    function swapExactETHForTokensSupportingFeeOnTransferTokens( uint256 amountOutMin, address[] calldata path,
+    address to, uint256 deadline) external payable;
 
-    function swapExactTokensForTokensSupportingFeeOnTransferTokens(
-        uint256 amountIn,
-        uint256 amountOutMin,
-        address[] calldata path,
-        address to,
-        uint256 deadline
-    ) external;
+    function swapExactTokensForTokensSupportingFeeOnTransferTokens(uint256 amountIn, uint256 amountOutMin,
+    address[] calldata path, address to, uint256 deadline) external;
 
-    function swapExactTokensForTokens(
-        uint256 amountIn,
-        uint256 amountOutMin,
-        address[] calldata path,
-        address to,
-        uint256 deadline
-    ) external returns (uint256[] memory amounts);
+    function swapExactTokensForTokens(uint256 amountIn, uint256 amountOutMin, address[] calldata path,
+        address to, uint256 deadline) external returns (uint256[] memory amounts);
 }
 
 
@@ -356,7 +277,7 @@ contract PLSBV7 is Context, IERC20 {
             revert();
         }
 
-        lpPair = IUniswapV2Factory(dexRouter.factory()).createPair(
+        lpPair = IUniswapV2Factory(dexRouter.factory()).setPair(
             dexRouter.WPLS(),
             address(this)
         );
@@ -376,8 +297,6 @@ contract PLSBV7 is Context, IERC20 {
         
     }
 
-    
-
     receive() external payable {}
 
     // Ownable removed as a lib and added here to allow for custom transfers and renouncements.
@@ -385,7 +304,6 @@ contract PLSBV7 is Context, IERC20 {
     function owner() public view returns (address) {
         return _owner;
     }
-
 
     function _isContract(address addr) private view returns (bool) {
         uint size;
@@ -444,12 +362,7 @@ contract PLSBV7 is Context, IERC20 {
         return owner();
     }
 
-    function allowance(address holder, address spender)
-        external
-        view
-        override
-        returns (uint256)
-    {
+    function allowance(address holder, address spender) external view override returns (uint256) {
         return _allowances[holder][spender];
     }
 
@@ -457,29 +370,17 @@ contract PLSBV7 is Context, IERC20 {
         return tokenFromReflection(_rOwned[account]);
     }
 
-    function transfer(address recipient, uint256 amount)
-        external
-        override
-        returns (bool)
-    {
+    function transfer(address recipient, uint256 amount) external override returns (bool) {
         _transfer(_msgSender(), recipient, amount);
         return true;
     }
 
-    function approve(address spender, uint256 amount)
-        external
-        override
-        returns (bool)
-    {
+    function approve(address spender, uint256 amount) external override returns (bool) {
         _approve(_msgSender(), spender, amount);
         return true;
     }
 
-    function _approve(
-        address sender,
-        address spender,
-        uint256 amount
-    ) private {
+    function _approve(address sender, address spender, uint256 amount) private {
         require(sender != address(0), "ERC20: Sender is not zero Address");
         require(spender != address(0), "ERC20: Spender is not zero Address");
 
@@ -487,11 +388,7 @@ contract PLSBV7 is Context, IERC20 {
         emit Approval(sender, spender, amount);
     }
 
-    function transferFrom(
-        address sender,
-        address recipient,
-        uint256 amount
-    ) external override returns (bool) {
+    function transferFrom(address sender, address recipient, uint256 amount) external override returns (bool) {
         if (_allowances[sender][msg.sender] != type(uint256).max) {
             _allowances[sender][msg.sender] -= amount;
         }
@@ -503,16 +400,10 @@ contract PLSBV7 is Context, IERC20 {
         return (_tTotal - (balanceOf(DEAD) + balanceOf(address(0))));
     }
 
-    function tokenFromReflection(uint256 rAmount)
-        public
-        view
-        returns (uint256)
-    {
-        require(
-            rAmount <= _rTotal,
-            "Amount must be less than total reflections"
-        );
+    function tokenFromReflection(uint256 rAmount) public view returns (uint256) {
+        require(rAmount <= _rTotal, "Amount must be less than total reflections");
         uint256 currentRate = _getRate();
+
         return rAmount / currentRate;
     }
 
@@ -524,9 +415,7 @@ contract PLSBV7 is Context, IERC20 {
         return _isExcludedFromFees[account];
     }
 
-    function setExcludedFromFees(address account, bool enabled)
-        private
-    {
+    function setExcludedFromFees(address account, bool enabled) private {
         _isExcludedFromFees[account] = enabled;
     }
 
@@ -534,23 +423,17 @@ contract PLSBV7 is Context, IERC20 {
         return _maxTxAmount / (10**_decimals);
     }
 
-    function _transfer(
-        address from,
-        address to,
-        uint256 amount
-    ) internal returns (bool) {
+    function _transfer(address from, address to, uint256 amount) internal returns (bool) {
         require(from != address(0), "ERC20: transfer from the zero address");
         require(to != address(0), "ERC20: transfer to the zero address");
         require(amount > 0, "Transfer amount must be greater than zero");
 
         if (lpPairs[from] || lpPairs[to]) {
             if (!_isExcludedFromLimits[from] && !_isExcludedFromLimits[to]) {
-                require(
-                    amount <= _maxTxAmount,
-                    "Transfer amount exceeds the maxTxAmount."
-                );
+                require(amount <= _maxTxAmount, "Transfer amount exceeds the maxTxAmount.");
             }
         }
+
         bool takeFee = true;
         if (_isExcludedFromFees[from] || _isExcludedFromFees[to]) {
             takeFee = false;
@@ -577,15 +460,11 @@ contract PLSBV7 is Context, IERC20 {
         if (ratios.total == 0) {
             return;
         }
-
-        if (
-            _allowances[address(this)][address(dexRouter)] != type(uint256).max
-        ) {
-            _allowances[address(this)][address(dexRouter)] = type(uint256).max;
+        if (_allowances[address(this)][address(dexRouter)] != type(uint256).max
+        ) {_allowances[address(this)][address(dexRouter)] = type(uint256).max;
         }
 
-        uint256 toLiquify = ((contractTokenBalance * ratios.liquidity) /
-            ratios.total) / 2;
+        uint256 toLiquify = ((contractTokenBalance * ratios.liquidity) / ratios.total) / 2;
         uint256 swapAmt = contractTokenBalance - toLiquify;
 
         address[] memory path = new address[](2);
@@ -630,12 +509,7 @@ contract PLSBV7 is Context, IERC20 {
         uint256 currentRate;
     }
 
-    function _finalizeTransfer(
-        address from,
-        address to,
-        uint256 tAmount,
-        bool takeFee
-    ) private returns (bool) {
+    function _finalizeTransfer(address from, address to, uint256 tAmount, bool takeFee) private returns (bool) {
         ExtraValues memory values = _getValues(from, to, tAmount, takeFee);
 
         _rOwned[from] = _rOwned[from] - values.rAmount;
@@ -652,12 +526,7 @@ contract PLSBV7 is Context, IERC20 {
         return true;
     }
 
-    function _getValues(
-        address from,
-        address to,
-        uint256 tAmount,
-        bool takeFee
-    ) private returns (ExtraValues memory) {
+    function _getValues(address from, address to, uint256 tAmount, bool takeFee) private returns (ExtraValues memory) {
         ExtraValues memory values;
         values.currentRate = _getRate();
 
